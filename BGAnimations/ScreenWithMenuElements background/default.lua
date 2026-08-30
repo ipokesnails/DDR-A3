@@ -1,0 +1,1 @@
+return LoadActor(Model().."background")..{ InitCommand=function(s) s:FullScreen() end, };
