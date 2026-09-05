@@ -1,3 +1,22 @@
+local function TestSelectedSong()                                                   -- Added by ipokesnails for testing adding songs to a favorites list
+    local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")                      -- Added by ipokesnails
+    
+    if not mw then                                                                  -- Added by ipokesnails
+        print("FAVORITES TEST: MusicWheel not found")                               -- Added by ipokesnails
+        return                                                                      -- Added by ipokesnails
+    end                                                                             -- Added by ipokesnails
+
+    local song = mw:GetSelectedSong()                                               -- Added by ipokesnails
+
+    if song then                                                                    -- Added by ipokesnails
+        print("FAVORITES TEST: Selected song = "..song:GetDisplayMainTitle())       -- Added by ipokesnails
+        print("FAVORITES TEST: Song dir = "..song:GetSongDir())                     -- Added by ipokesnails
+    else                                                                            -- Added by ipokesnails
+        print("FAVORITES TEST: No song selected")                                   -- Added by ipokesnails
+    end                                                                             -- Added by ipokesnails
+end                                                                                 -- Added by ipokesnails
+local player = event.PlayerNumber                                                   -- Added by ipokesnails
+
 local function WheelMove(mov)
     local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
     mw:Move(mov)
@@ -10,6 +29,11 @@ local pressed = {
 
 local function InputHandler(event)
     local player = event.PlayerNumber
+    
+    if event.type == "InputEventType_FirstPress" and event.GameButton == "UpLeft" then  -- Added by ipokesnails
+        TestSelectedSong()                                                              -- Added by ipokesnails
+    end                                                                                 -- Added by ipokesnails
+    
     local MusicWheel = SCREENMAN:GetTopScreen("ScreenSelectMusic"):GetChild("MusicWheel")
     if event.type == "InputEventType_Release" then
         pressed[event.GameButton] = false
