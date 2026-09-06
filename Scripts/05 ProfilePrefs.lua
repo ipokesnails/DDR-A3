@@ -8,14 +8,15 @@ lanes: whether lane boundaries should be shown or not.
 bias: whether the early/late indicator should be shown.
 stars: extra stage stars (it's not a pref. should that be here?)
 ]]
-local defaultPrefs = 
+local defaultPrefs =
 {
-	guidelines = false,
-	character = "",
-	filter = 0,
-	lanes = false,
-	bias = false,
-	stars = 0
+    guidelines = false,
+    character = "",
+    filter = 0,
+    lanes = false,
+    bias = false,
+    stars = 0,
+    favoriteLists = {}  -- Added by ipokesnails for favorites testing
 }
 local gameSeed = nil
 local machinePrefs = DeepCopy(defaultPrefs)
