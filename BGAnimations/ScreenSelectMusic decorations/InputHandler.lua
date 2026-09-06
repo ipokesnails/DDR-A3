@@ -8,8 +8,31 @@ local pressed = {
     Down=false, Left=false, Right=false
 }
 
+local function TestSelectedSong()                                              -- Added for favorites list testing
+    local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")                 -- Added for favorites list testing
+
+    if not mw then                                                             -- Added for favorites list testing
+        print("FAVORITES TEST: MusicWheel not found")                          -- Added for favorites list testing
+        return                                                                 -- Added for favorites list testing
+    end                                                                        -- Added for favorites list testing
+
+    local song = mw:GetSelectedSong()                                          -- Added for favorites list testing
+
+    if song then                                                               -- Added for favorites list testing
+        print("FAVORITES TEST: Selected song = "..song:GetDisplayMainTitle())  -- Added for favorites list testing
+        print("FAVORITES TEST: Song dir = "..song:GetSongDir())                -- Added for favorites list testing
+    else                                                                       -- Added for favorites list testing
+        print("FAVORITES TEST: No song selected")                              -- Added for favorites list testing
+    end                                                                        -- Added for favorites list testing
+end                                                                            -- Added for favorites list testing
+
 local function InputHandler(event)
     local player = event.PlayerNumber
+
+    if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then    -- Added for favorites list testing  -- Using coin button as potential unused input
+    TestSelectedSong()                                                                  -- Added for favorites list testing
+    end                                                                                 -- Added for favorites list testing
+    
     local MusicWheel = SCREENMAN:GetTopScreen("ScreenSelectMusic"):GetChild("MusicWheel")
     if event.type == "InputEventType_Release" then
         pressed[event.GameButton] = false
