@@ -16,7 +16,6 @@ local defaultPrefs =
     lanes = false,
     bias = false,
     stars = 0,
-    favoriteLists = {}  -- Added by ipokesnails for favorites testing
 }
 local gameSeed = nil
 local machinePrefs = DeepCopy(defaultPrefs)
