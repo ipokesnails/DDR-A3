@@ -104,10 +104,10 @@ local function TestFavoriteProfile()                                            
         print("FAVORITES TEST: Dir = "..PROFILEMAN:LocalProfileIDToDir(profileID))   -- Added for favorites list testing
     end                                                                              -- Added for favorites list testing
 end                                                                                  -- Added for favorites list testing
-
+]]
 local function InputHandler(event)
     local player = event.PlayerNumber
-]]
+
 --[[
     if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then  -- Added for favorites list testing
         TestFavoriteProfile()                                                         -- Added for favorites list testing
