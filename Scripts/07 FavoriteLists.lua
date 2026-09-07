@@ -7,9 +7,9 @@ local FAVORITES_DIR = "Favorites"
 
 local function GetProfileDir(pn)
     if pn == PLAYER_1 then
-        return PROFILEMAN:GetProfileDir(ProfileSlot_Player1)
+        return PROFILEMAN:GetProfileDir(0)
     elseif pn == PLAYER_2 then
-        return PROFILEMAN:GetProfileDir(ProfileSlot_Player2)
+        return PROFILEMAN:GetProfileDir(1)
     end
 
     return nil
