@@ -62,8 +62,9 @@ end
 local function WriteList(path, songs)
     local file = RageFileUtil.CreateRageFile()
 
-    if not file:Open(path, 2) then  -- Last change
-        Trace("[FavoriteLists] Error writing to " .. path .. ": " .. file:GetError())
+    if not file:Open(path, 2) then
+        print("[FavoriteLists] WRITE FAILED: " .. path)
+        print("[FavoriteLists] ERROR: " .. file:GetError())
         file:destroy()
         return false
     end
@@ -75,8 +76,10 @@ local function WriteList(path, songs)
     file:Close()
     file:destroy()
 
+    print("[FavoriteLists] WRITE SUCCESS: " .. path)
+
     return true
-end
+    end
 
 function FavoriteLists.GetProfileDir(pn)
     return GetProfileDir(pn)
