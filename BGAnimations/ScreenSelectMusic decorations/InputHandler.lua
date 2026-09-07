@@ -36,11 +36,11 @@ local function InputHandler(event)
     local player = event.PlayerNumber
 
     if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then  -- Added for favorites list testing
-        TestFavoriteProfile()                                                         -- Added for favorites list testing
+        -- TestFavoriteProfile()                                                         -- Added for favorites list testing
     end                                                                               -- Added for favorites list testing
 
     if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then  -- Added for favorites list testing
-    TestFavoriteLists()                                                               -- Added for favorites list testing
+        TestFavoriteLists()                                                               -- Added for favorites list testing
     end                                                                               -- Added for favorites list testing
     
     local MusicWheel = SCREENMAN:GetTopScreen("ScreenSelectMusic"):GetChild("MusicWheel")
