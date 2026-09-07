@@ -7,8 +7,8 @@ local pressed = {
     MenuDown=false, MenuLeft=false, MenuRight=false,
     Down=false, Left=false, Right=false
 }
-
-local function TestFavoriteLists()                                           -- Added by ipokesnails for favorites testing
+--[[
+local function TestFavoriteLists()                                           
     local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 
     if not mw then
@@ -58,7 +58,42 @@ local function TestFavoriteLists()                                           -- 
         end
     end
 end
+]] 
 
+local function ToggleFavoriteForPlayer(player)
+    local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+
+    if not mw then
+        print("FAVORITES: MusicWheel not found")
+        return
+    end
+
+    local song = mw:GetSelectedSong()
+
+    if not song then
+        print("FAVORITES: No song selected")
+        return
+    end
+
+    local listName = "Favorites"
+    local alreadyFavorite = FavoriteLists.Contains(player, listName, song)
+
+    local success = FavoriteLists.Toggle(player, listName, song)
+
+    if not success then
+        print("FAVORITES: Failed to modify favorites")
+        return
+    end
+
+    if alreadyFavorite then
+        print("FAVORITES: Removed '" .. song:GetDisplayMainTitle() ..
+              "' from " .. listName .. " for " .. tostring(player))
+    else
+        print("FAVORITES: Added '" .. song:GetDisplayMainTitle() ..
+              "' to " .. listName .. " for " .. tostring(player))
+    end
+end
+--[[
 local function TestFavoriteProfile()                                                 -- Added by ipokesnails for favorites list testing
     local profileIDs = PROFILEMAN:GetLocalProfileIDs()                               -- Added for favorites list testing
  
@@ -72,15 +107,21 @@ end                                                                             
 
 local function InputHandler(event)
     local player = event.PlayerNumber
-
+]]
+--[[
     if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then  -- Added for favorites list testing
-        -- TestFavoriteProfile()                                                         -- Added for favorites list testing
+        TestFavoriteProfile()                                                         -- Added for favorites list testing
     end                                                                               -- Added for favorites list testing
 
     if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then  -- Added for favorites list testing
-        TestFavoriteLists()                                                               -- Added for favorites list testing
+        TestFavoriteLists()                                                           -- Added for favorites list testing
     end                                                                               -- Added for favorites list testing
-    
+]]
+
+    if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then
+        ToggleFavoriteForPlayer(player)
+    end
+
     local MusicWheel = SCREENMAN:GetTopScreen("ScreenSelectMusic"):GetChild("MusicWheel")
     if event.type == "InputEventType_Release" then
         pressed[event.GameButton] = false
