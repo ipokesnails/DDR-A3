@@ -26,6 +26,20 @@ local function TestFavoriteLists()                                           -- 
     print("FAVORITES TEST: Selected song = " .. song:GetDisplayMainTitle())
     print("FAVORITES TEST: Song dir = " .. song:GetSongDir())
 
+    print("FAVORITES TEST: Adding selected song to P1 Test")
+    print("FAVORITES TEST: Add result = " ..
+        tostring(FavoriteLists.Add(PLAYER_1, "Test", song)))
+
+    print("FAVORITES TEST: After add = " ..
+        tostring(FavoriteLists.Contains(PLAYER_1, "Test", song)))
+
+    print("FAVORITES TEST: Removing selected song from P1 Test")
+    print("FAVORITES TEST: Remove result = " ..
+        tostring(FavoriteLists.Remove(PLAYER_1, "Test", song)))
+
+    print("FAVORITES TEST: After remove = " ..
+        tostring(FavoriteLists.Contains(PLAYER_1, "Test", song)))
+
     for _, pn in ipairs({PLAYER_1, PLAYER_2}) do
         print("FAVORITES TEST: Player = " .. tostring(pn))
         print("FAVORITES TEST: Profile dir = " .. tostring(FavoriteLists.GetProfileDir(pn)))
