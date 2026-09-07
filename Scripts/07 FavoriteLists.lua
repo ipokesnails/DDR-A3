@@ -38,7 +38,7 @@ end
 local function ReadList(path)
     local file = RageFileUtil.CreateRageFile()
 
-    if not file:Open(path, RageFile.READ) then
+    if not file:Open(path, 1) then  -- Last change
         file:destroy()
         return {}
     end
@@ -62,7 +62,7 @@ end
 local function WriteList(path, songs)
     local file = RageFileUtil.CreateRageFile()
 
-    if not file:Open(path, RageFile.WRITE) then
+    if not file:Open(path, 2) then  -- Last change
         Trace("[FavoriteLists] Error writing to " .. path .. ": " .. file:GetError())
         file:destroy()
         return false
