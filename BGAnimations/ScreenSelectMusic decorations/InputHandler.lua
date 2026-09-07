@@ -8,18 +8,42 @@ local pressed = {
     Down=false, Left=false, Right=false
 }
 
-local function TestFavoriteLists()                                                            -- Added by ipokesnails for favorites list testing
-    for _, pn in ipairs({PLAYER_1, PLAYER_2}) do                                              -- Added for favorites list testing
-        print("FAVORITES TEST: Player = " .. tostring(pn))                                    -- Added for favorites list testing
-        print("FAVORITES TEST: Profile dir = " .. tostring(FavoriteLists.GetProfileDir(pn)))  -- Added for favorites list testing
+local function TestFavoriteLists()                                           -- Added by ipokesnails for favorites testing
+    local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
 
-        local lists = FavoriteLists.GetLists(pn)                                              -- Added for favorites list testing
+    if not mw then
+        print("FAVORITES TEST: MusicWheel not found")
+        return
+    end
 
-        for i, listName in ipairs(lists) do                                                   -- Added for favorites list testing
-            print("FAVORITES TEST: List [" .. i .. "] = " .. listName)                        -- Added for favorites list testing
-        end                                                                                   -- Added for favorites list testing
-    end                                                                                       -- Added for favorites list testing
-end                                                                                           -- Added for favorites list testing
+    local song = mw:GetSelectedSong()
+
+    if not song then
+        print("FAVORITES TEST: No song selected")
+        return
+    end
+
+    print("FAVORITES TEST: Selected song = " .. song:GetDisplayMainTitle())
+    print("FAVORITES TEST: Song dir = " .. song:GetSongDir())
+
+    for _, pn in ipairs({PLAYER_1, PLAYER_2}) do
+        print("FAVORITES TEST: Player = " .. tostring(pn))
+        print("FAVORITES TEST: Profile dir = " .. tostring(FavoriteLists.GetProfileDir(pn)))
+
+        local lists = FavoriteLists.GetLists(pn)
+
+        for i, listName in ipairs(lists) do
+            local result = FavoriteLists.Contains(pn, listName, song)
+
+            print(
+                "FAVORITES TEST: "
+                .. listName
+                .. " contains song = "
+                .. tostring(result)
+            )
+        end
+    end
+end
 
 local function TestFavoriteProfile()                                                 -- Added by ipokesnails for favorites list testing
     local profileIDs = PROFILEMAN:GetLocalProfileIDs()                               -- Added for favorites list testing
