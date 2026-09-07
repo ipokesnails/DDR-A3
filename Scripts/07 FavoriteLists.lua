@@ -92,10 +92,12 @@ function FavoriteLists.GetLists(pn)
     local files = FILEMAN:GetDirListing(favoritesDir, false, true)
     local lists = {}
 
-    for _, filename in ipairs(files) do
+    for _, filename in ipairs(files) do                      -- Changed filename paths
         if filename:match("%.txt$") then
-            local listName = filename:gsub("%.txt$", "")
-            table.insert(lists, listName)
+            local listName = filename:match("([^/]+)%.txt$")
+            if listName then
+                table.insert(lists, listName)
+            end
         end
     end
 
@@ -149,7 +151,24 @@ function FavoriteLists.Toggle(pn, listName, song)
     end
 end
 
-local function TestFavoriteLists()
+local function TestFavoriteLists()                              -- Changing the test function to compare the selected song with the favorites list
+    local mw = SCREENMAN:GetTopScreen():GetChild("MusicWheel")
+
+    if not mw then
+        print("FAVORITES TEST: MusicWheel not found")
+        return
+    end
+
+    local song = mw:GetSelectedSong()
+
+    if not song then
+        print("FAVORITES TEST: No song selected")
+        return
+    end
+
+    print("FAVORITES TEST: Selected song = " .. song:GetDisplayMainTitle())
+    print("FAVORITES TEST: Song dir = " .. song:GetSongDir())
+
     for _, pn in ipairs({PLAYER_1, PLAYER_2}) do
         print("FAVORITES TEST: Player = " .. tostring(pn))
         print("FAVORITES TEST: Profile dir = " .. tostring(FavoriteLists.GetProfileDir(pn)))
@@ -157,7 +176,14 @@ local function TestFavoriteLists()
         local lists = FavoriteLists.GetLists(pn)
 
         for i, listName in ipairs(lists) do
-            print("FAVORITES TEST: List [" .. i .. "] = " .. listName)
+            local result = FavoriteLists.Contains(pn, listName, song)
+
+            print(
+                "FAVORITES TEST: "
+                .. listName
+                .. " contains song = "
+                .. tostring(result)
+            )
         end
     end
 end
