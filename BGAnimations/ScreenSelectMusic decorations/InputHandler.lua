@@ -8,6 +8,19 @@ local pressed = {
     Down=false, Left=false, Right=false
 }
 
+local function TestFavoriteLists()                                                            -- Added by ipokesnails for favorites list testing
+    for _, pn in ipairs({PLAYER_1, PLAYER_2}) do                                              -- Added for favorites list testing
+        print("FAVORITES TEST: Player = " .. tostring(pn))                                    -- Added for favorites list testing
+        print("FAVORITES TEST: Profile dir = " .. tostring(FavoriteLists.GetProfileDir(pn)))  -- Added for favorites list testing
+
+        local lists = FavoriteLists.GetLists(pn)                                              -- Added for favorites list testing
+
+        for i, listName in ipairs(lists) do                                                   -- Added for favorites list testing
+            print("FAVORITES TEST: List [" .. i .. "] = " .. listName)                        -- Added for favorites list testing
+        end                                                                                   -- Added for favorites list testing
+    end                                                                                       -- Added for favorites list testing
+end                                                                                           -- Added for favorites list testing
+
 local function TestFavoriteProfile()                                                 -- Added by ipokesnails for favorites list testing
     local profileIDs = PROFILEMAN:GetLocalProfileIDs()                               -- Added for favorites list testing
  
@@ -24,6 +37,10 @@ local function InputHandler(event)
 
     if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then  -- Added for favorites list testing
         TestFavoriteProfile()                                                         -- Added for favorites list testing
+    end                                                                               -- Added for favorites list testing
+
+    if event.type == "InputEventType_FirstPress" and event.GameButton == "Coin" then  -- Added for favorites list testing
+    TestFavoriteLists()                                                               -- Added for favorites list testing
     end                                                                               -- Added for favorites list testing
     
     local MusicWheel = SCREENMAN:GetTopScreen("ScreenSelectMusic"):GetChild("MusicWheel")
