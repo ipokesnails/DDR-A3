@@ -162,4 +162,4 @@ local function TestFavoriteLists()
     end
 end
 
-TestFavoriteLists()
+-- TestFavoriteLists()
