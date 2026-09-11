@@ -7,7 +7,7 @@ return Def.ActorFrame {
 	};
 	Def.Sprite{
 		Texture=THEME:GetPathG("","MusicWheelItem/"..
-			(params.IsFavorite and params.FavoriteModel or Model().."flash"), -- Adding different category colors for favorites
+			(params.IsFavorite and params.FavoriteModel or Model()).."flash"), -- Adding different category colors for favorites
 		InitCommand=function(s) s:y(2) end,
 		SetMessageCommand=function(s,params)
 			s:zoomx(0.915):zoomy(0.76):diffusealpha(params.HasFocus and 1 or 0):diffuseramp():effectcolor1(color("1,1,1,0.2")):effectcolor2(color("1,1,1,1")):effectperiod(0.5)
