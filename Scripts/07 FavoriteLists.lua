@@ -39,15 +39,6 @@ end
 
 local function ReadList(path)
     local file = RageFileUtil:CreateRageFile()
-
-    -- Temporary diagnostic start
-        Trace("[FavoriteLists] CreateRageFile returned: " .. tostring(file))
-
-    if not file then
-        Trace("[FavoriteLists] ERROR: CreateRageFile returned nil for " .. path)
-        return {}
-    end
-    -- temporary diagnostic end
     
     if not file:Open(path, 1) then
         file:destroy()
