@@ -38,7 +38,17 @@ local function GetListFile(pn, listName)
 end
 
 local function ReadList(path)
-    local file = RageFileUtil.CreateRageFile()
+    local file = RageFileUtil:CreateRageFile()
+
+    -- Temporary diagnostic start
+        Trace("[FavoriteLists] CreateRageFile returned: " .. tostring(file))
+
+    if not file then
+        Trace("[FavoriteLists] ERROR: CreateRageFile returned nil for " .. path)
+        return {}
+    end
+    -- temporary diagnostic end
+    
     if not file:Open(path, 1) then
         file:destroy()
         return {}
@@ -60,7 +70,7 @@ local function ReadList(path)
 end
 
 local function WriteList(path, songs)
-    local file = RageFileUtil.CreateRageFile()
+    local file = RageFileUtil:CreateRageFile()
 
     if not file:Open(path, 2) then
         Trace("[FavoriteLists] Error writing to " .. path .. ": " .. file:GetError())
