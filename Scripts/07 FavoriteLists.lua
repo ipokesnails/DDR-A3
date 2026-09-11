@@ -5,40 +5,41 @@ FavoriteLists = {}
 
 local FAVORITES_DIR = "Favorites"
 
+-- Cache[player] = {
+--     [listName] = {
+--         [songDir] = true
+--     }
+-- }
+FavoriteLists.Cache = {}
+
 local function GetProfileDir(pn)
     if pn == PLAYER_1 then
         return PROFILEMAN:GetProfileDir(0)
     elseif pn == PLAYER_2 then
         return PROFILEMAN:GetProfileDir(1)
     end
-
     return nil
 end
 
 local function GetFavoritesDir(pn)
     local profileDir = GetProfileDir(pn)
-
     if not profileDir or profileDir == "" then
         return nil
     end
-
     return profileDir .. FAVORITES_DIR .. "/"
 end
 
 local function GetListFile(pn, listName)
     local favoritesDir = GetFavoritesDir(pn)
-
     if not favoritesDir then
         return nil
     end
-
     return favoritesDir .. listName .. ".txt"
 end
 
 local function ReadList(path)
     local file = RageFileUtil.CreateRageFile()
-
-    if not file:Open(path, 1) then  -- Last change
+    if not file:Open(path, RageFile.READ) then
         file:destroy()
         return {}
     end
@@ -47,7 +48,6 @@ local function ReadList(path)
 
     while not file:AtEOF() do
         local songDir = file:GetLine()
-
         if songDir and songDir ~= "" then
             songs[songDir] = true
         end
@@ -62,9 +62,8 @@ end
 local function WriteList(path, songs)
     local file = RageFileUtil.CreateRageFile()
 
-    if not file:Open(path, 2) then
-        print("[FavoriteLists] WRITE FAILED: " .. path)
-        print("[FavoriteLists] ERROR: " .. file:GetError())
+    if not file:Open(path, RageFile.WRITE) then
+        Trace("[FavoriteLists] Error writing to " .. path .. ": " .. file:GetError())
         file:destroy()
         return false
     end
@@ -76,10 +75,8 @@ local function WriteList(path, songs)
     file:Close()
     file:destroy()
 
-    print("[FavoriteLists] WRITE SUCCESS: " .. path)
-
     return true
-    end
+end
 
 function FavoriteLists.GetProfileDir(pn)
     return GetProfileDir(pn)
@@ -95,9 +92,10 @@ function FavoriteLists.GetLists(pn)
     local files = FILEMAN:GetDirListing(favoritesDir, false, true)
     local lists = {}
 
-    for _, filename in ipairs(files) do                      -- Changed filename paths
+    for _, filename in ipairs(files) do
         if filename:match("%.txt$") then
             local listName = filename:match("([^/]+)%.txt$")
+
             if listName then
                 table.insert(lists, listName)
             end
@@ -109,15 +107,38 @@ function FavoriteLists.GetLists(pn)
     return lists
 end
 
-function FavoriteLists.Contains(pn, listName, song)
-    local path = GetListFile(pn, listName)
+-- Reload all favorite files for a player into memory.
+function FavoriteLists.Refresh(pn)
+    local cache = {}
 
-    if not path or not song then
+    for _, listName in ipairs(FavoriteLists.GetLists(pn)) do
+        local path = GetListFile(pn, listName)
+
+        if path then
+            cache[listName] = ReadList(path)
+        end
+    end
+
+    FavoriteLists.Cache[pn] = cache
+end
+
+function FavoriteLists.Contains(pn, listName, song)
+    if not song then
         return false
     end
 
-    local songs = ReadList(path)
-    return songs[song:GetSongDir()] == true
+    -- Make sure the cache exists.
+    if not FavoriteLists.Cache[pn] then
+        FavoriteLists.Refresh(pn)
+    end
+
+    local list = FavoriteLists.Cache[pn][listName]
+
+    if not list then
+        return false
+    end
+
+    return list[song:GetSongDir()] == true
 end
 
 function FavoriteLists.Add(pn, listName, song)
@@ -127,7 +148,17 @@ function FavoriteLists.Add(pn, listName, song)
         return false
     end
 
-    local songs = ReadList(path)
+    if not FavoriteLists.Cache[pn] then
+        FavoriteLists.Refresh(pn)
+    end
+
+    local songs = FavoriteLists.Cache[pn][listName]
+
+    if not songs then
+        songs = {}
+        FavoriteLists.Cache[pn][listName] = songs
+    end
+
     songs[song:GetSongDir()] = true
 
     return WriteList(path, songs)
@@ -140,7 +171,16 @@ function FavoriteLists.Remove(pn, listName, song)
         return false
     end
 
-    local songs = ReadList(path)
+    if not FavoriteLists.Cache[pn] then
+        FavoriteLists.Refresh(pn)
+    end
+
+    local songs = FavoriteLists.Cache[pn][listName]
+
+    if not songs then
+        return false
+    end
+
     songs[song:GetSongDir()] = nil
 
     return WriteList(path, songs)
@@ -154,3 +194,11 @@ function FavoriteLists.Toggle(pn, listName, song)
     end
 end
 
+-- Return all favorite lists and their songs for use by C++.
+function FavoriteLists.GetWheelData(pn)
+    if not FavoriteLists.Cache[pn] then
+        FavoriteLists.Refresh(pn)
+    end
+
+    return FavoriteLists.Cache[pn] or {}
+end
