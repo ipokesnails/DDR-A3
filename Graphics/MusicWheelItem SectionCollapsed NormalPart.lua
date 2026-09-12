@@ -1,7 +1,7 @@
 return Def.ActorFrame {
 	SetMessageCommand=function(self,params) self:zoom(params.HasFocus and 2.2 or 1.8); end,
 	Def.Sprite{
-		name="Normal",
+		Name="Normal",
 		InitCommand=function(s) s:y(2):zoom(0.91) end,
 		SetMessageCommand=function(s,params)
 	        local model = Model()
