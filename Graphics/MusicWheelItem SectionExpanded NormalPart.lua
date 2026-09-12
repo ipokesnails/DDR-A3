@@ -1,17 +1,40 @@
 return Def.ActorFrame {
 	SetMessageCommand=function(self,params) self:zoom(params.HasFocus and 2.2 or 1.8); end,
-	Def.Sprite{
-		Texture=THEME:GetPathG("","MusicWheelItem/"..
-			(params.IsFavorite and params.FavoriteModel or Model()).."selected"), -- Adding different colors for favorite groups
-		InitCommand=function(s) s:y(2):zoom(0.91) end,
+		Def.Sprite{
+	    Name="Selected",
+	    InitCommand=function(s) s:y(2):zoom(0.91) end,
+	    SetMessageCommand=function(s,params)
+	        local model = Model()
+	
+	        if params.IsFavorite then
+	            if string.find(string.lower(params.Text or ""), "boss", 1, true) then
+	                model = "boss_"
+	            else
+	                model = "favorite_"
+	            end
+	        end
+	
+	        s:Load(THEME:GetPathG("","MusicWheelItem/"..model.."selected"))
+	    end;
 	};
 	Def.Sprite{
-		Texture=THEME:GetPathG("","MusicWheelItem/"..
-			(params.IsFavorite and params.FavoriteModel or Model()).."flash"), -- adding different colors for favorite groups
-		InitCommand=function(s) s:y(2) end,
-		SetMessageCommand=function(s,params)
-			s:zoomx(0.915):zoomy(0.76):diffusealpha(params.HasFocus and 1 or 0):diffuseramp():effectcolor1(color("1,1,1,0.2")):effectcolor2(color("1,1,1,1")):effectperiod(0.5)
-		end;
+	    Name="Flash",
+	    InitCommand=function(s) s:y(2) end,
+	    SetMessageCommand=function(s,params)
+	        local model = Model()
+	
+	        if params.IsFavorite then
+	            if string.find(string.lower(params.Text or ""), "boss", 1, true) then
+	                model = "boss_"
+	            else
+	                model = "favorite_"
+	            end
+	        end
+	
+	        s:Load(THEME:GetPathG("","MusicWheelItem/"..model.."flash"))
+	
+	        s:zoomx(0.915):zoomy(0.76):diffusealpha(params.HasFocus and 1 or 0):diffuseramp():effectcolor1(color("1,1,1,0.2)"):effectcolor2(color("1,1,1,1)"):effectperiod(0.5)
+	    end;
 	};
 	LoadFont("MusicWheelItem GroupNames")..{
 		InitCommand=function(s) s:maxwidth(320):diffuse(Color.Black) end,
