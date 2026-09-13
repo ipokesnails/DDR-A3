@@ -37,10 +37,14 @@ if not (GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2()) then
 end
 
 local function GetOptionName(screen, idx)
-    return screen:GetOptionRow(idx-1):GetName();
+	return screen:GetOptionRow(idx-1):GetName();
 end
 
 local exitIndex = #rownames
+
+for i = 1, 1 do  -- Added for options menu favorite management
+	table.insert(rownames, "Favorite" .. tostring(i))
+end
 
 function setting(self,screen)
     local screen = SCREENMAN:GetTopScreen();
