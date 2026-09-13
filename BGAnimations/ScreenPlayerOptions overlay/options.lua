@@ -329,7 +329,7 @@ local function MakeRow(rownames, idx)
 		-- Favorite boss icon
 		LoadActor(THEME:GetPathG("", "FavoriteIcon/Boss"))..{
 		    InitCommand=function(s)
-		        s:x(64):setsize(40,40):visible(false);
+		        s:x(64):setsize(30,30):visible(false);
 		    end,
 		
 		    OnCommand=function(s)
