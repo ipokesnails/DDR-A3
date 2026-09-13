@@ -399,11 +399,15 @@ local t = Def.ActorFrame{
     InitCommand=function(s) s:x(base_x()) end,
     OnCommand=cmd(diffusealpha,1;sleep,0.05;diffusealpha,0;sleep,0.05;diffusealpha,1;sleep,0.05;diffusealpha,0;sleep,0.05;diffusealpha,1;sleep,0.05;diffusealpha,0;sleep,0.05;linear,0.05;diffusealpha,1);
     
-    PlayerOptionsFinishedMessageCommand=function(s,param) -- Added by ipokesnails for individual options menu dismissal
-        if param and param.PlayerNumber == pn then
-            s:visible(false);
-        end;
-    end;
+    PlayerOptionsFinishedMessageCommand=function(s,param)
+	    Trace("[options.lua] PlayerOptionsFinished received for pn=" ..
+	        tostring(pn) .. " param=" .. tostring(param and param.PlayerNumber));
+	
+	    if param and param.PlayerNumber == pn then
+	        Trace("[options.lua] Hiding options for pn=" .. tostring(pn));
+	        s:visible(false);
+	    end;
+	end;
     
     OffCommand=cmd(diffusealpha,1;sleep,0.05;diffusealpha,0;sleep,0.05;diffusealpha,1;sleep,0.05;diffusealpha,0;sleep,0.05;diffusealpha,1;sleep,0.05;diffusealpha,0;sleep,0.05);
 
