@@ -743,7 +743,7 @@ function FavoriteOptionRow(index)
                                 return
                         end
 
-                        local lists = FavoriteLists.GetLists(pn)
+                        local lists = FavoriteLists.GetOptionLists(pn)
                         local listName = lists[index]
 
                         if listName and FavoriteLists.Contains(pn, listName, song) then
@@ -758,7 +758,7 @@ function FavoriteOptionRow(index)
                                 return
                         end
 
-                        local lists = FavoriteLists.GetLists(pn)
+                        local lists = FavoriteLists.GetOptionLists(pn)
                         local listName = lists[index]
 
                         if not listName then
@@ -776,7 +776,7 @@ function FavoriteOptionRow(index)
                         local result = {}
 
                         for _, pn in ipairs({PLAYER_1, PLAYER_2}) do
-                                if #FavoriteLists.GetLists(pn) >= index then
+                                if #FavoriteLists.GetOptionLists(pn) >= index then
                                         table.insert(result, pn)
                                 end
                         end
