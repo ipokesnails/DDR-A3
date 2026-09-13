@@ -42,8 +42,10 @@ end
 
 local exitIndex = #rownames
 
-for i = 1, 1 do  -- Added for options menu favorite management
-	table.insert(rownames, "Favorite" .. tostring(i))
+local favoriteLists = FavoriteLists.GetLists(pn)
+
+for i = 1, #favoriteLists do
+    table.insert(rownames, "Favorite" .. tostring(i))
 end
 
 function setting(self,screen)
