@@ -723,3 +723,70 @@ function OptionRowGauge()
 end
 
 --Code by Midflight Digital
+
+-- Added by ipokesnails
+-- Favorite list option rows
+function FavoriteOptionRow(index)
+        local t = {
+                Name = "Favorite" .. tostring(index),
+                LayoutType = "ShowAllInRow",
+                SelectType = "SelectOne",
+                OneChoiceForAllPlayers = false,
+                ExportOnChange = true,
+                Choices = {"OFF", "ON"},
+
+                LoadSelections = function(self, list, pn)
+                        list[1] = true
+
+                        local song = GAMESTATE:GetCurrentSong()
+                        if not song then
+                                return
+                        end
+
+                        local lists = FavoriteLists.GetLists(pn)
+                        local listName = lists[index]
+
+                        if listName and FavoriteLists.Contains(pn, listName, song) then
+                                list[1] = false
+                                list[2] = true
+                        end
+                end,
+
+                SaveSelections = function(self, list, pn)
+                        local song = GAMESTATE:GetCurrentSong()
+                        if not song then
+                                return
+                        end
+
+                        local lists = FavoriteLists.GetLists(pn)
+                        local listName = lists[index]
+
+                        if not listName then
+                                return
+                        end
+
+                        if list[2] then
+                                FavoriteLists.Add(pn, listName, song)
+                        else
+                                FavoriteLists.Remove(pn, listName, song)
+                        end
+                end,
+
+                EnabledForPlayers = function(self)
+                        local result = {}
+
+                        for _, pn in ipairs({PLAYER_1, PLAYER_2}) do
+                                if #FavoriteLists.GetLists(pn) >= index then
+                                        table.insert(result, pn)
+                                end
+                        end
+
+                        return result
+                end,
+
+                HideOnDisable = true,
+        };
+
+        setmetatable(t, t);
+        return t;
+end
