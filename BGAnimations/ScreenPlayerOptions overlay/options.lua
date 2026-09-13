@@ -221,46 +221,159 @@ local function MakeRow(rownames, idx)
 			InitCommand=cmd(x,64;uppercase,true;zoom,0.8;maxwidth,150);
 			OnCommand=cmd(queuecommand,"Set");
 			SetCommand=function(self)
-				local screen = SCREENMAN:GetTopScreen();
-				if screen then
-					local name = GetOptionName(screen, idx);
-                    local choice = screen:GetOptionRow(idx-1):GetChoiceInRowWithFocus(pn);
-                    local function ChoiceToText(choice)
-                        if THEME:GetMetric("ScreenOptionsMaster",name.."Explanation") then
-                            return THEME:GetString("OptionItemNames",name..tostring(choice))
-                        else
-                            return ""
-                        end
-                    end
-					if name ~= "NoteSkins" and name ~= "VisualDelaySeconds" then
-						--normal option, handle default choice coloring.
-                        local ChoiceText = ChoiceToText(choice)
-                        --for most options, 0 is the default choice, for Speed it is 3.
-						if ChoiceText and ChoiceText == ChoiceToText(name == "Speed" and 3 or 0) then
-							self:diffuse(color("#06ff06")):diffusetopedge(color("#74ff74"));
-						else
-							if ChoiceText == "LIFE4" or ChoiceText == "RISKY" then
-								self:diffuse(color("#ff0606")):diffusetopedge(color("#ff7474"));
-							else
-								self:diffuse(color("1,1,1,1"));
-							end
-						end;
-                        self:settext(ChoiceText);
-					elseif name == "NoteSkins" then
-						self:settext(NOTESKIN:GetNoteSkinNames()[choice+1])
-					elseif name == "VisualDelaySeconds" then
-						if choice == 50 then
-							self:settext("±0.0"):diffuse(color("#06ff06")):diffusetopedge(color("#74ff74"));
-						else
-							self:settext(THEME:GetString("OptionItemNames","VisualDelaySeconds"..tostring(choice))):diffuse(color("1,1,1,1"));
-						end
-					else
-						self:settext("")
-					end;
-				end;
+			    local screen = SCREENMAN:GetTopScreen();
+			
+			    if screen then
+			        local name = GetOptionName(screen, idx);
+			        local choice = screen:GetOptionRow(idx-1):GetChoiceInRowWithFocus(pn);
+			
+			        -- Favorite rows use an icon instead of OFF/ON text.
+			        if name:match("^Favorite%d+$") then
+			            self:settext("");
+			            return;
+			        end;
+			
+			        local function ChoiceToText(choice)
+			            if THEME:GetMetric("ScreenOptionsMaster",name.."Explanation") then
+			                return THEME:GetString("OptionItemNames",name..tostring(choice))
+			            else
+			                return ""
+			            end
+			        end
+			
+			        if name ~= "NoteSkins" and name ~= "VisualDelaySeconds" then
+			            --normal option, handle default choice coloring.
+			            local ChoiceText = ChoiceToText(choice)
+			
+			            --for most options, 0 is the default choice, for Speed it is 3.
+			            if ChoiceText and ChoiceText == ChoiceToText(name == "Speed" and 3 or 0) then
+			                self:diffuse(color("#06ff06")):diffusetopedge(color("#74ff74"));
+			            else
+			                if ChoiceText == "LIFE4" or ChoiceText == "RISKY" then
+			                    self:diffuse(color("#ff0606")):diffusetopedge(color("#ff7474"));
+			                else
+			                    self:diffuse(color("1,1,1,1"));
+			                end
+			            end;
+			
+			            self:settext(ChoiceText);
+			
+			        elseif name == "NoteSkins" then
+			            self:settext(NOTESKIN:GetNoteSkinNames()[choice+1])
+			
+			        elseif name == "VisualDelaySeconds" then
+			            if choice == 50 then
+			                self:settext("±0.0"):diffuse(color("#06ff06")):diffusetopedge(color("#74ff74"));
+			            else
+			                self:settext(THEME:GetString("OptionItemNames","VisualDelaySeconds"..tostring(choice))):diffuse(color("1,1,1,1"));
+			            end
+			
+			        else
+			            self:settext("")
+			        end;
+			    end;
 			end;
 			[p"MenuLeft%MessageCommand"]=function(s) s:queuecommand("Set") end,
 	        [p"MenuRight%MessageCommand"]=function(s) s:queuecommand("Set") end,
+		};
+		-- Favorite heart icon
+		LoadActor(THEME:GetPathG("", "FavoriteIcon/Heart"))..{
+		    InitCommand=function(s)
+		        s:x(64):setsize(40,40):visible(false);
+		    end,
+		
+		    OnCommand=function(s)
+		        s:queuecommand("Set");
+		    end,
+		
+		    SetCommand=function(s)
+		        local screen = SCREENMAN:GetTopScreen();
+		        if not screen then
+		            s:visible(false);
+		            return;
+		        end;
+		
+		        local name = GetOptionName(screen, idx);
+		
+		        if not name:match("^Favorite%d+$") then
+		            s:visible(false);
+		            return;
+		        end;
+		
+		        local choice = screen:GetOptionRow(idx-1):GetChoiceInRowWithFocus(pn);
+		        local favoriteIndex = tonumber(name:match("%d+"));
+		        local lists = FavoriteLists.GetLists(pn);
+		        local listName = lists[favoriteIndex];
+		        local song = GAMESTATE:GetCurrentSong();
+		
+		        if not listName or listName == "Boss songs" or not song then
+		            s:visible(false);
+		            return;
+		        end;
+		
+		        s:visible(
+		            choice == 1 and
+		            FavoriteLists.Contains(pn, listName, song)
+		        );
+		    end,
+		
+		    [p"MenuLeft%MessageCommand"]=function(s)
+		        s:queuecommand("Set");
+		    end,
+		
+		    [p"MenuRight%MessageCommand"]=function(s)
+		        s:queuecommand("Set");
+		    end,
+		};
+		
+		-- Favorite boss icon
+		LoadActor(THEME:GetPathG("", "FavoriteIcon/Boss"))..{
+		    InitCommand=function(s)
+		        s:x(64):setsize(40,40):visible(false);
+		    end,
+		
+		    OnCommand=function(s)
+		        s:queuecommand("Set");
+		    end,
+		
+		    SetCommand=function(s)
+		        local screen = SCREENMAN:GetTopScreen();
+		        if not screen then
+		            s:visible(false);
+		            return;
+		        end;
+		
+		        local name = GetOptionName(screen, idx);
+		
+		        if not name:match("^Favorite%d+$") then
+		            s:visible(false);
+		            return;
+		        end;
+		
+		        local choice = screen:GetOptionRow(idx-1):GetChoiceInRowWithFocus(pn);
+		        local favoriteIndex = tonumber(name:match("%d+"));
+		        local lists = FavoriteLists.GetLists(pn);
+		        local listName = lists[favoriteIndex];
+		        local song = GAMESTATE:GetCurrentSong();
+		
+		        if listName ~= "Boss songs" or not song then
+		            s:visible(false);
+		            return;
+		        end;
+		
+		        s:visible(
+		            choice == 1 and
+		            FavoriteLists.Contains(pn, listName, song)
+		        );
+		    end,
+		
+		    [p"MenuLeft%MessageCommand"]=function(s)
+		        s:queuecommand("Set");
+		    end,
+		
+		    [p"MenuRight%MessageCommand"]=function(s)
+		        s:queuecommand("Set");
+		    end,
 		};
 		LoadActor(THEME:GetPathG("","_shared/"..Model().."cursor"))..{
 			InitCommand=cmd(zoom,0.75;x,-20;diffusealpha,1;bounce;effectmagnitude,3,0,0;effectperiod,1);
