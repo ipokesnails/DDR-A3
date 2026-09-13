@@ -108,6 +108,24 @@ function FavoriteLists.GetLists(pn)
     return lists
 end
 
+function FavoriteLists.GetOptionLists(pn) -- To exclude adding and removing boss songs for profiles other than 0
+    local lists = FavoriteLists.GetLists(pn)
+
+    if GetProfileDir(pn) == PROFILEMAN:GetProfileDir(0) then
+        return lists
+    end
+
+    local filtered = {}
+
+    for _, listName in ipairs(lists) do
+        if listName ~= "Boss songs" then
+            table.insert(filtered, listName)
+        end
+    end
+
+    return filtered
+end
+
 -- Reload all favorite files for a player into memory.
 function FavoriteLists.Refresh(pn)
     local cache = {}
