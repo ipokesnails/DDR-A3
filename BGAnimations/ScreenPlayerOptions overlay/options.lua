@@ -42,7 +42,7 @@ end
 
 local exitIndex = #rownames
 
-local favoriteLists = FavoriteLists.GetLists(pn)
+local favoriteLists = FavoriteLists.GetOptionLists(pn)
 
 for i = 1, #favoriteLists do
     table.insert(rownames, "Favorite" .. tostring(i))
@@ -304,7 +304,7 @@ local function MakeRow(rownames, idx)
 		
 		        local choice = screen:GetOptionRow(idx-1):GetChoiceInRowWithFocus(pn);
 		        local favoriteIndex = tonumber(name:match("%d+"));
-		        local lists = FavoriteLists.GetLists(pn);
+		        local lists = FavoriteLists.GetOptionLists(pn);
 		        local listName = lists[favoriteIndex];
 		        local song = GAMESTATE:GetCurrentSong();
 		
