@@ -123,11 +123,32 @@ function ComboUnderField()
 end
 
 function ExtraOption2()
+    local lines
+
     if GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
-        return "1,2,3,4,5,6,7,8,9,10,11,Favorite1"
+        lines = {
+            "1", "2", "3", "4", "5", "6",
+            "7", "8", "9", "10", "11"
+        }
     else
-        return "1,2,3,4,5,6,7,8,9,10,11,12,Favorite1"
+        lines = {
+            "1", "2", "3", "4", "5", "6",
+            "7", "8", "9", "10", "11", "12"
+        }
     end
+
+    -- Find the largest number of favorite lists belonging
+    -- to either player, so versus play can show both players'
+    -- available lists.
+    local p1Count = #FavoriteLists.GetLists(PLAYER_1)
+    local p2Count = #FavoriteLists.GetLists(PLAYER_2)
+    local favoriteCount = math.max(p1Count, p2Count)
+
+    for i = 1, favoriteCount do
+        table.insert(lines, "Favorite" .. tostring(i))
+    end
+
+    return table.concat(lines, ",")
 end
 
 function ShockArrows()
