@@ -140,8 +140,8 @@ function ExtraOption2()
     -- Find the largest number of favorite lists belonging
     -- to either player, so versus play can show both players'
     -- available lists.
-    local p1Count = #FavoriteLists.GetLists(PLAYER_1)
-    local p2Count = #FavoriteLists.GetLists(PLAYER_2)
+    local p1Count = #FavoriteLists.GetOptionLists(PLAYER_1)
+	local p2Count = #FavoriteLists.GetOptionLists(PLAYER_2)
     local favoriteCount = math.max(p1Count, p2Count)
 
     for i = 1, favoriteCount do
