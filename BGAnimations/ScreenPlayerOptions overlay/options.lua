@@ -43,21 +43,25 @@ end
 local exitIndex = #rownames
 
 function setting(self,screen)
-	local screen = SCREENMAN:GetTopScreen();
-	local index = screen:GetCurrentRowIndex(pn);
-	local row = screen:GetOptionRow(index);
-	local name = row:GetName();
-	local choice = row:GetChoiceInRowWithFocus(pn);
-	if THEME:GetMetric( "ScreenOptionsMaster",name.."Explanation" ) then
-		self:settext(THEME:GetString("OptionItemExplanations",name..tostring(choice)));
-	elseif name == "NoteSkins" then
-		self:settext("Change the appearance of the arrows.");
-	elseif name == "VisualDelaySeconds" then
-		self:settext("Adjust the display timing of the arrows.\nIf you feel that the input is lagging behind the Step Zone, decrease the amount.");
-	else
-		self:settext("");
-	end;
-end;
+    local screen = SCREENMAN:GetTopScreen();
+    local index = screen:GetCurrentRowIndex(pn);
+    local row = screen:GetOptionRow(index);
+    local name = row:GetName();
+    local choice = row:GetChoiceInRowWithFocus(pn);
+
+    if not name:match("^Favorite%d+$") and -- Added functionality for favorites management
+       THEME:GetMetric("ScreenOptionsMaster", name.."Explanation") then
+        self:settext(THEME:GetString("OptionItemExplanations",name..tostring(choice)));
+    elseif name == "NoteSkins" then
+        self:settext("Change the appearance of the arrows.");
+    elseif name == "VisualDelaySeconds" then
+        self:settext("Adjust the display timing of the arrows.\nIf you feel that the input is lagging behind the Step Zone, decrease the amount.");
+    elseif name:match("^Favorite%d+$") then
+        self:settext("Add or remove this song from the favorite list.");
+    else
+        self:settext("");
+    end;
+end
 
 local function MakeRow(rownames, idx)
      --the first row begins with focus
@@ -105,12 +109,23 @@ local function MakeRow(rownames, idx)
 			InitCommand=cmd(x,-122;uppercase,true;halign,0;zoom,0.75;maxwidth,150);
 			OnCommand=function(s) s:queuecommand("Set") end,
 			SetCommand=function(self)
-                local screen = SCREENMAN:GetTopScreen();
-                if screen then
-                     self:settext(THEME:GetString("OptionTitles",GetOptionName(screen, idx)));
-                 else
-                     self:queuecommand("Set");
-                end;
+			    local screen = SCREENMAN:GetTopScreen();
+			    if not screen then
+			        self:queuecommand("Set");
+			        return;
+			    end;
+			
+			    local name = GetOptionName(screen, idx);
+			
+			    if name:match("^Favorite%d+$") then
+			        local favoriteIndex = tonumber(name:match("%d+"));
+			        local lists = FavoriteLists.GetLists(pn);
+			        local listName = lists[favoriteIndex];
+			
+			        self:settext(listName or "");
+			    else
+			        self:settext(THEME:GetString("OptionTitles", name));
+			    end;
 			end;
 			GainFocusCommand=cmd(diffuse,color("0,0,0,1"));
 			LoseFocusCommand=cmd(diffuse,color("1,1,1,1"));
