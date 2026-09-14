@@ -354,8 +354,8 @@ local function MakeRow(rownames, idx)
 		
 		        local choice = screen:GetOptionRow(idx-1):GetChoiceInRowWithFocus(pn);
 		        local favoriteIndex = tonumber(name:match("%d+"));
-		        local lists = FavoriteLists.GetLists(pn);
-		        local listName = lists[favoriteIndex];
+		        local lists = FavoriteLists.GetOptionLists(pn);
+				local listName = lists[favoriteIndex];
 		        local song = GAMESTATE:GetCurrentSong();
 		
 		        if listName ~= "Boss songs" or not song then
