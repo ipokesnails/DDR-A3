@@ -108,10 +108,22 @@ function FavoriteLists.GetLists(pn)
     return lists
 end
 
-function FavoriteLists.GetOptionLists(pn) -- To exclude adding and removing boss songs for profiles other than 0
+function FavoriteLists.GetOptionLists(pn)
     local lists = FavoriteLists.GetLists(pn)
 
-    if GetProfileDir(pn) == PROFILEMAN:GetProfileDir(0) then
+    -- Profile 0 is the only profile allowed to edit/view Boss songs.
+    local isProfile0 = false
+
+    if PROFILEMAN:IsPersistentProfile(pn) then
+        local activeProfile = PROFILEMAN:GetProfile(pn)
+        local profile0 = PROFILEMAN:GetLocalProfile("00000000")
+
+        if activeProfile and profile0 then
+            isProfile0 = activeProfile:GetGUID() == profile0:GetGUID()
+        end
+    end
+
+    if isProfile0 then
         return lists
     end
 
