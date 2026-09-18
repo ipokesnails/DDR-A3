@@ -130,23 +130,23 @@ return Def.ActorFrame{
 			-- end;
 		-- };
 	};
-																												-- Disabling jackets for testing
+																												
 	
-	--Def.ActorFrame{
-	--	Name="Jacket";
-	--	LoadActor(Model().."jacket")..{ InitCommand=function(s) s:x(245):y(15) end, };
-	--	Def.Quad{ 
-	--		InitCommand=function(s) s:diffuse(Color.Black):diffusealpha(0.4):xy(244,17):setsize(152,152) end,
-	--	};
-	--	Def.Sprite{
-	--		InitCommand=function(s) s:x(244):y(17) end,
-	--		SetCommand=function(s)
-	--			local song = GAMESTATE:GetCurrentSong()
-	--			if song then
-	--				s:LoadFromCached("Jacket",GetJacketPath(song))
-	--			end
-	--			s:setsize(150,150)
-	--		end
-	--	};
-	--};
+	Def.ActorFrame{
+		Name="Jacket";
+		LoadActor(Model().."jacket")..{ InitCommand=function(s) s:x(245):y(15) end, };
+		Def.Quad{ 
+			InitCommand=function(s) s:diffuse(Color.Black):diffusealpha(0.4):xy(244,17):setsize(152,152) end,
+		};
+		Def.Sprite{
+			InitCommand=function(s) s:x(244):y(17) end,
+			SetCommand=function(s)
+				local song = GAMESTATE:GetCurrentSong()
+				if song then
+					s:LoadFromCached("Jacket",GetJacketPath(song))
+				end
+				s:setsize(150,150)
+			end
+		};
+	};
 };
