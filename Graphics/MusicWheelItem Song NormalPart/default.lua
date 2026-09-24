@@ -149,7 +149,7 @@ return Def.ActorFrame{
 				if song then
 												-- PERFORMANCE TESTING CHANGES
 												-- Commenting out the line to load jackets in the music wheel
-					s:LoadFromCached("Jacket",GetJacketPath(song))
+					--s:LoadFromCached("Jacket",GetJacketPath(song))
 				end
 				s:setsize(103,103)
 			end,
