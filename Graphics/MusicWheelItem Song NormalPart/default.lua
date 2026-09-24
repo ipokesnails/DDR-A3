@@ -147,7 +147,9 @@ return Def.ActorFrame{
 			SetMessageCommand=function(s,p)
 				local song = p.Song;
 				if song then
-					s:LoadFromCached("Jacket",GetJacketPath(song))
+												-- PERFORMANCE TESTING CHANGES
+												-- Commenting out the line to load jackets in the music wheel
+					--s:LoadFromCached("Jacket",GetJacketPath(song))
 				end
 				s:setsize(103,103)
 			end,
