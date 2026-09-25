@@ -142,22 +142,26 @@ return Def.ActorFrame{
 			end
 		end,
 	};
-	Def.ActorFrame{
-		Def.Sprite{
-			Name="Banner",
-			InitCommand=function(s) s:xy(-2.5,-1.5) end,
-			SetMessageCommand=function(s,p)
-				local song = p.Song;
-				if song then
+
 												-- PERFORMANCE TESTING CHANGES
 												-- Commenting out the line to load jackets in the music wheel
-					--s:LoadFromCached("Jacket",GetJacketPath(song))
-				end
-				s:setsize(103,103)
-			end,
-		};
-		
-	};
+
+--	Def.ActorFrame{
+--		Def.Sprite{
+--			Name="Banner",
+--			InitCommand=function(s) s:xy(-2.5,-1.5) end,
+--			SetMessageCommand=function(s,p)
+--				local song = p.Song;
+--				if song then
+--												-- PERFORMANCE TESTING CHANGES
+--												-- Commenting out the line to load jackets in the music wheel
+--					--s:LoadFromCached("Jacket",GetJacketPath(song))
+--				end
+--				s:setsize(103,103)
+--			end,
+--		};
+--		
+--	};
 	Def.ActorFrame{
 		InitCommand=function(s) s:x(1):y(67) end,
 		Def.BitmapText{
