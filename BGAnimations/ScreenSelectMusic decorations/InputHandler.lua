@@ -74,81 +74,58 @@ local function InputHandler(event)
             return
         end
     end
-
-                                                                -- PERFORMANCE TESTING CHANGES
-                                                                -- Commented out music wheel sounds
     
     if MusicWheel ~= nil then
         if event.GameButton == "MenuLeft" and GAMESTATE:IsPlayerEnabled(player) then
-            --SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
+            SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
         end
         if event.GameButton == "MenuRight" and GAMESTATE:IsPlayerEnabled(player) then
-            --SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
+            SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
         end
-
-                                                                        -- PERFORMANCE TESTING CHANGES
-                                                                        -- Simplifying up and down down button presses
-        
-        --if event.GameButton == "MenuDown" and GAMESTATE:IsPlayerEnabled(player) and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-        --    if MusicWheel:GetSelectedType() == 'WheelItemDataType_Song' then
-        --        WheelMove(3)
-        --        if MusicWheel:GetSelectedType() ~= 'WheelItemDataType_Song' then
-        --            WheelMove(-2)
-        --            if MusicWheel:GetSelectedType() == "WheelItemDataType_Song" then
-        --                WheelMove(2)
-        --                if MusicWheel:GetSelectedType() ~= "WheelItemDataType_Song" then
-        --                    WheelMove(-1)
-        --                    if MusicWheel:GetSelectedType() == "WheelItemDataType_Song" then
-        --                        WheelMove(1)
-        --                    end
-        --                end
-        --            end
-        --        end
-        --    else
-        --        MusicWheel:Move(1)
-        --    end
-        --    MusicWheel:Move(0)
-        --    --SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
-        --end
-
-        if event.GameButton == "MenuDown"
-            and GAMESTATE:IsPlayerEnabled(player)
-            and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-
-            MusicWheel:Move(1)
-            --SOUND:PlayOnce(THEME:GetPathS("", "_MusicWheel change"))
+       
+        if event.GameButton == "MenuDown" and GAMESTATE:IsPlayerEnabled(player) and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
+            if MusicWheel:GetSelectedType() == 'WheelItemDataType_Song' then
+                WheelMove(3)
+                if MusicWheel:GetSelectedType() ~= 'WheelItemDataType_Song' then
+                    WheelMove(-2)
+                    if MusicWheel:GetSelectedType() == "WheelItemDataType_Song" then
+                        WheelMove(2)
+                        if MusicWheel:GetSelectedType() ~= "WheelItemDataType_Song" then
+                            WheelMove(-1)
+                            if MusicWheel:GetSelectedType() == "WheelItemDataType_Song" then
+                                WheelMove(1)
+                            end
+                        end
+                    end
+                end
+            else
+                MusicWheel:Move(1)
+            end
+            MusicWheel:Move(0)
+            SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
         end
-        
-        --if event.GameButton == "MenuUp" and GAMESTATE:IsPlayerEnabled(player) and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-        --    if MusicWheel:GetSelectedType() == 'WheelItemDataType_Song' then
-        --        WheelMove(-3)
-        --        if MusicWheel:GetSelectedType() ~= 'WheelItemDataType_Song' then
-        --            WheelMove(2)
-        --            if MusicWheel:GetSelectedType() == "WheelItemDataType_Song" then
-        --                WheelMove(-2)
-        --                if MusicWheel:GetSelectedType() ~= "WheelItemDataType_Song" then
-        --                    WheelMove(1)
-        --                    if MusicWheel:GetSelectedType() == "WheelItemDataType_Song" then
-        --                        WheelMove(-1)
-        --                    end
-        --                end
-        --            end
-        --        end
-        --    else
-        --        WheelMove(-1)
-        --    end
-        --    WheelMove(0)
-        --    --SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
-        --end
-
-        if event.GameButton == "MenuUp"
-            and GAMESTATE:IsPlayerEnabled(player)
-            and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
-
-            MusicWheel:Move(-1)
-            --SOUND:PlayOnce(THEME:GetPathS("", "_MusicWheel change"))
+      
+        if event.GameButton == "MenuUp" and GAMESTATE:IsPlayerEnabled(player) and PREFSMAN:GetPreference("OnlyDedicatedMenuButtons") then
+            if MusicWheel:GetSelectedType() == 'WheelItemDataType_Song' then
+                WheelMove(-3)
+                if MusicWheel:GetSelectedType() ~= 'WheelItemDataType_Song' then
+                    WheelMove(2)
+                    if MusicWheel:GetSelectedType() == "WheelItemDataType_Song" then
+                        WheelMove(-2)
+                        if MusicWheel:GetSelectedType() ~= "WheelItemDataType_Song" then
+                            WheelMove(1)
+                            if MusicWheel:GetSelectedType() == "WheelItemDataType_Song" then
+                                WheelMove(-1)
+                            end
+                        end
+                    end
+                end
+            else
+                WheelMove(-1)
+            end
+            WheelMove(0)
+            SOUND:PlayOnce(THEME:GetPathS("","_MusicWheel change"))
         end
-    
     end
 end
 
