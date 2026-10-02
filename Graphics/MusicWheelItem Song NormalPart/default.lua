@@ -3,15 +3,6 @@ local cursor = Def.ActorFrame{};
 local diff = Def.ActorFrame{};
 local top
 
-												-- PERFORMANCE TESTING CHANGES
-												-- Temporarily replacing the entire lua file
-return Def.ActorFrame{
-    SetMessageCommand=function(self,params)
-    end,
-}
-
---[[
-
 local function GetExpandedSectionIndex()
 	local mWheel
 	if SCREENMAN:GetTopScreen():GetChild("MusicWheel")  ~= nil then
@@ -215,4 +206,3 @@ return Def.ActorFrame{
 		end,
 	};
 }
-]]
