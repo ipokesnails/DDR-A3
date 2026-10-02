@@ -63,16 +63,14 @@ for i=1,2 do
 	};
 end
 
-												-- PERFORMANCE TESTING CHANGES
-												-- Temporarily disable all per-player grade/difficulty actors.
---for i,pn in pairs(GAMESTATE:GetEnabledPlayers()) do 
---	grade[#grade+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/grade.lua"))(pn)..{
---		InitCommand=function(s) s:xy(-5,3.4):zoomy(1.13) end,
---	};
---	diff[#diff+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/diff.lua"))(pn)..{
---		InitCommand=function(s) s:xy(pn == PLAYER_1 and -74 or 74,-36) end,
---	};
---end;
+for i,pn in pairs(GAMESTATE:GetEnabledPlayers()) do 
+	grade[#grade+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/grade.lua"))(pn)..{
+		InitCommand=function(s) s:xy(-5,3.4):zoomy(1.13) end,
+	};
+	diff[#diff+1] = loadfile(THEME:GetPathG("MusicWheelItem","Song NormalPart/diff.lua"))(pn)..{
+		InitCommand=function(s) s:xy(pn == PLAYER_1 and -74 or 74,-36) end,
+	};
+end;
 
 
 return Def.ActorFrame{
@@ -143,25 +141,20 @@ return Def.ActorFrame{
 		end,
 	};
 
-												-- PERFORMANCE TESTING CHANGES
-												-- Commenting out the line to load jackets in the music wheel
-
---	Def.ActorFrame{
---		Def.Sprite{
---			Name="Banner",
---			InitCommand=function(s) s:xy(-2.5,-1.5) end,
---			SetMessageCommand=function(s,p)
---				local song = p.Song;
---				if song then
---												-- PERFORMANCE TESTING CHANGES
---												-- Commenting out the line to load jackets in the music wheel
---					--s:LoadFromCached("Jacket",GetJacketPath(song))
---				end
---				s:setsize(103,103)
---			end,
---		};
---		
---	};
+	Def.ActorFrame{
+		Def.Sprite{
+			Name="Banner",
+			InitCommand=function(s) s:xy(-2.5,-1.5) end,
+			SetMessageCommand=function(s,p)
+				local song = p.Song;
+				if song then
+					s:LoadFromCached("Jacket",GetJacketPath(song))
+				end
+				s:setsize(103,103)
+			end,
+		};
+		
+	};
 	Def.ActorFrame{
 		InitCommand=function(s) s:x(1):y(67) end,
 		Def.BitmapText{
