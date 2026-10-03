@@ -1,12 +1,43 @@
---[[ Temporarily replacing the entire lua file for performance testing
+-- Temporarily replacing the entire lua file for performance testing
 
 return Def.ActorFrame {
     SetMessageCommand=function(self,params)
-        self:zoom(params.HasFocus and 2.2 or 1.8);
-    end;
-};
-]]
+        self:zoom(params.HasFocus and 2.2 or 1.8)
+    end,
 
+    Def.Sprite {
+        InitCommand=function(s)
+            s:y(2):zoom(0.91)
+        end
+    },
+
+    Def.Sprite {
+        InitCommand=function(s)
+            s:y(2)
+        end
+    },
+
+    LoadFont("MusicWheelItem GroupNames")..{
+        InitCommand=function(s)
+            s:maxwidth(320)
+        end
+    },
+
+    Def.Sprite {
+        InitCommand=function(s)
+            s:x(-287):zoom(0.85)
+        end
+    },
+
+    Def.Sprite {
+        InitCommand=function(s)
+            s:x(287):zoom(0.85):rotationy(180)
+        end
+    }
+}
+
+
+--[[
 return Def.ActorFrame {
 	SetMessageCommand=function(self,params) self:zoom(params.HasFocus and 2.2 or 1.8); end,
 		Def.Sprite{
@@ -78,4 +109,4 @@ return Def.ActorFrame {
 		StartSelectingStepsMessageCommand=function(s) s:diffusealpha(0) end,
 	};
 };
-
+]]
