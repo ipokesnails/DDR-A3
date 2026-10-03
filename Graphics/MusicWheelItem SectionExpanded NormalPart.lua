@@ -4,7 +4,7 @@ return Def.ActorFrame {
     SetMessageCommand=function(self,params)
         self:zoom(params.HasFocus and 2.2 or 1.8)
     end,
---[[
+
     Def.Sprite {
         InitCommand=function(s)
             s:y(2):zoom(0.91)
@@ -33,7 +33,7 @@ return Def.ActorFrame {
         InitCommand=function(s)
             s:x(287):zoom(0.85):rotationy(180)
         end
-    } ]]
+    } 
 }
 
 
