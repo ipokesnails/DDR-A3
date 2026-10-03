@@ -13,8 +13,7 @@ return Def.ActorFrame {
 	                model = "favorite_"
 	            end
 	        end
-					-- PERFORMANCE TESTING CHANGES
-	        --s:Load(THEME:GetPathG("","MusicWheelItem/"..model.."normal"))
+	        s:Load(THEME:GetPathG("","MusicWheelItem/"..model.."normal"))
 	    end;
 	};
 	Def.Sprite{
@@ -30,8 +29,7 @@ return Def.ActorFrame {
 	                model = "favorite_"
 	            end
 	        end
-					-- PERFORMANCE TESTING CHANGES
-	        --s:Load(THEME:GetPathG("","MusicWheelItem/"..model.."flash"))
+	        s:Load(THEME:GetPathG("","MusicWheelItem/"..model.."flash"))
 	
 	        s:zoomx(0.915):zoomy(0.76):diffusealpha(params.HasFocus and 1 or 0):diffuseramp():effectcolor1(color("1,1,1,0.2")):effectcolor2(color("1,1,1,1")):effectperiod(0.5)
 	    end;
