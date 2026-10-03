@@ -1,12 +1,12 @@
--- Temporarily replacing the entire lua file for performance testing
+--[[ Temporarily replacing the entire lua file for performance testing
 
 return Def.ActorFrame {
     SetMessageCommand=function(self,params)
         self:zoom(params.HasFocus and 2.2 or 1.8);
     end;
 };
+]]
 
---[[
 return Def.ActorFrame {
 	SetMessageCommand=function(self,params) self:zoom(params.HasFocus and 2.2 or 1.8); end,
 		Def.Sprite{
@@ -78,4 +78,4 @@ return Def.ActorFrame {
 		StartSelectingStepsMessageCommand=function(s) s:diffusealpha(0) end,
 	};
 };
-]]
+
